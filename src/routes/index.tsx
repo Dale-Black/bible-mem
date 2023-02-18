@@ -1,18 +1,18 @@
 import logo from "../images/bible.png";
 import { A, Html, Head, Title, Meta } from "solid-start";
-// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-// export function routeData() {
-//   return createServerData$(() => prisma.flashcard.findMany());
-// }
+export function routeData() {
+  return createServerData$(() => prisma.flashcard.findMany());
+}
 
 const Dashboard = () => {
-  // const fCards = useRouteData<typeof routeData>();
-  // console.log(fCards);
+  const fCards = useRouteData<typeof routeData>();
+  console.log(fCards);
   return (
     <>
       <Html lang="en">
@@ -30,8 +30,7 @@ const Dashboard = () => {
           </A>
           <A href="/flashcards" class="btn justify-self-end">
             Flashcards
-            {/* <button class="btn btn-disabled">{fCards.length}</button> */}
-            <button class="btn btn-disabled">{0}</button>
+            <button class="btn btn-disabled">{fCards.length}</button>
           </A>
         </div>
         <div class="flex flex-col items-center justify-center gap-12 px-4 py-8">
