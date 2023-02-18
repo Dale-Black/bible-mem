@@ -12,7 +12,7 @@ export function routeData() {
 
 const Dashboard = () => {
   const fCards = useRouteData<typeof routeData>();
-  console.log(fCards);
+  console.log(fCards()?.[0]);
   return (
     <>
       <Html lang="en">
@@ -30,7 +30,7 @@ const Dashboard = () => {
           </A>
           <A href="/flashcards" class="btn justify-self-end">
             Flashcards
-            <button class="btn btn-disabled">{fCards.length}</button>
+            <button class="btn btn-disabled">{fCards()?.length}</button>
           </A>
         </div>
         <div class="flex flex-col items-center justify-center gap-12 px-4 py-8">
