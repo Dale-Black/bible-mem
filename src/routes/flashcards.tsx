@@ -1,7 +1,8 @@
 import { Show, createSignal } from "solid-js";
 import { createServerData$ } from "solid-start/server";
 import { useRouteData } from "solid-start";
-import { getFlashcards } from "~/db/utils";
+import { getFlashcards, updateFlashcard } from "~/db/utils";
+import server$ from "solid-start/server";
 
 function calcReview(
   quality: number,
@@ -50,50 +51,38 @@ const Flashcards = () => {
   const [index, setIndex] = createSignal(0);
   const card = () => fCards()?.[index()];
 
-  const [cardAttributes, setCardAttributes] = createSignal(
-    calcReview(
-      3,
+  function handleIncorrect() {
+    const [interval, repetitions, easeFactor] = calcReview(
+      0,
       card()?.repetitions,
       card()?.previousInterval,
       card()?.previousEaseFactor
-    )
-  );
-
-  function handleIncorrect() {
-    setCardAttributes(
-      calcReview(
-        0,
-        card()?.repetitions,
-        card()?.previousInterval,
-        card()?.previousEaseFactor
-      )
     );
+    server$(updateFlashcard(card()?.id, interval, repetitions, easeFactor));
     setIndex((index() + 1) % fCards()?.length);
     setShow(false);
   }
 
   function handleCorrect() {
-    setCardAttributes(
-      calcReview(
-        3,
-        card()?.repetitions,
-        card()?.previousInterval,
-        card()?.previousEaseFactor
-      )
+    const [interval, repetitions, easeFactor] = calcReview(
+      3,
+      card()?.repetitions,
+      card()?.previousInterval,
+      card()?.previousEaseFactor
     );
+    server$(updateFlashcard(card()?.id, interval, repetitions, easeFactor));
     setIndex((index() + 1) % fCards()?.length);
     setShow(false);
   }
 
   function handlePerfect() {
-    setCardAttributes(
-      calcReview(
-        5,
-        card()?.repetitions,
-        card()?.previousInterval,
-        card()?.previousEaseFactor
-      )
+    const [interval, repetitions, easeFactor] = calcReview(
+      5,
+      card()?.repetitions,
+      card()?.previousInterval,
+      card()?.previousEaseFactor
     );
+    server$(updateFlashcard(card()?.id, interval, repetitions, easeFactor));
     setIndex((index() + 1) % fCards()?.length);
     setShow(false);
   }
