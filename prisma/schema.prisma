@@ -17,11 +17,10 @@ model User {
 }
 
 model Flashcard {
-  id          Int    @id @default(autoincrement())
-  heading     String
-  text        String
-  easiness    Int    @default(3)
-  interval    Int    @default(1)
-  repetitions Int    @default(1)
-  reviewDate  String
+  id                 Int    @id @default(autoincrement())
+  heading            String
+  text               String
+  repetitions        Int    @default(0)
+  previousInterval   Int    @default(0)
+  previousEaseFactor Float  @default(2.5)
 }
